@@ -1,0 +1,28 @@
+services:
+  comfyui:
+    build: .
+    image: comfyui-rtx4000-hybrid
+    container_name: comfyui
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    ports:
+      - "8188:8188"
+    volumes:
+      - ./ComfyUI:/app
+      - ./shared/workflows:/app/user/workflows
+      - ./shared/models:/app/models
+      - ./shared/outputs:/app/output
+      - ./shared/custom_nodes:/app/custom_nodes
+      - ./shared/input:/app/input
+      - ./shared/temp:/app/temp
+      - ./shared/logs:/app/logs                 
+      - ./shared/configs:/app/user/configs 
+      
+    restart: unless-stopped
+
+# Named volumes para models (opcional)
+volumes:
+  comfyui-models:
+    driver: local
